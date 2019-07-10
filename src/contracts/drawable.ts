@@ -9,4 +9,11 @@ export interface Drawable {
      * before rendering
      */
     update() : void;
+
+    /**
+     * Should set new rendering context
+     *
+     * @param context
+     */
+    setContext(context: CanvasRenderingContext2D) : void;
 }
