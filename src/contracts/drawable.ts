@@ -1,8 +1,10 @@
 export interface Drawable {
     /**
      * Should render itself at canvas
+
+     * @param context
      */
-    draw() : void;
+    draw(context: CanvasRenderingContext2D) : void;
 
     /**
      * Should update inner object properties
@@ -11,9 +13,7 @@ export interface Drawable {
     update() : void;
 
     /**
-     * Should set new rendering context
-     *
-     * @param context
+     * Get drawable which should be drawn
      */
-    setContext(context: CanvasRenderingContext2D) : void;
+    getInnerDrawableObjects () : Drawable[];
 }
