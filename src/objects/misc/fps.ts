@@ -4,18 +4,18 @@ export class FpsObject extends AbstractObject {
     /**
      * The two d position on
      */
-    x: number;
-    y: number;
+    protected x: number;
+    protected y: number;
 
     /**
      * Time in milliseconds to last frame call
      */
-    lastFrameCallTime: number;
+    protected lastFrameCallTime: number;
 
     /**
      * Current fps
      */
-    fps: number = 0;
+    protected fps: number = 0;
 
     constructor (x: number, y: number) {
         super();
@@ -26,9 +26,10 @@ export class FpsObject extends AbstractObject {
         this.lastFrameCallTime = performance.now();
     }
 
-    draw (): void {
-        this.context.font = "20px Georgia";
-        this.context.fillText(`FPS ${this.fps}`, this.x, this.y);
+    draw (context: CanvasRenderingContext2D): void {
+        context.font = "20px Georgia";
+        context.fillStyle = '#ffffff';
+        context.fillText(`FPS ${this.fps}`, this.x, this.y);
     }
 
     /**

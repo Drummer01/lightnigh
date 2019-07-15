@@ -1,5 +1,6 @@
 import {World} from "./world";
 import {FpsObject} from "./objects/misc/fps";
+import {LightningObject} from "./objects/lightning/lightning";
 
 const canvas = <HTMLCanvasElement>document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -14,7 +15,7 @@ world.add(new FpsObject(2, 20));
 const loop = () => {
   world.update();
 
-  world.draw();
+  world.draw(context);
 
   window.requestAnimationFrame(loop)
 };
@@ -22,3 +23,8 @@ const loop = () => {
 
 // Start the show
 loop();
+
+
+document.addEventListener('click', (e) => {
+  world.add(new LightningObject(e.offsetX, 10))
+});

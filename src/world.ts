@@ -27,17 +27,43 @@ export class World implements Drawable {
     /**
      * Draw all inner objects
      */
-    draw(): void {
-        this.context.clearRect(0, 0, this.width, this.height);
+    draw (context: CanvasRenderingContext2D): void {
+        context.clearRect(0, 0, this.width, this.height);
 
-        this.objects.forEach(x => x.draw())
+        context.fillStyle = '#111111';
+        context.fillRect(0, 0, this.width, this.height);
+
+        this.objects.map(x => this.recursiveDraw(context, x))
+    }
+
+    /**
+     * Recursively draw objects
+     *
+     * @param context
+     * @param object
+     */
+    recursiveDraw (context: CanvasRenderingContext2D, object: Drawable) {
+        object.draw(context);
+
+        object.getInnerDrawableObjects().map(x => this.recursiveDraw(context, x))
+    }
+
+    /**
+     * Recursively update objects
+     *
+     * @param object
+     */
+    recursiveUpdate(object: Drawable) {
+        object.update();
+
+        object.getInnerDrawableObjects().map(x => this.recursiveUpdate(x))
     }
 
     /**
      * Update all inner objects
      */
-    update(): void {
-        this.objects.forEach(x => x.update())
+    update (): void {
+        this.objects.forEach(x => this.recursiveUpdate(x))
     }
 
     /**
@@ -45,8 +71,6 @@ export class World implements Drawable {
      * @param object
      */
     add (object: Drawable) : void {
-        object.setContext(this.context);
-
         this.objects.push(object);
     }
 
@@ -57,5 +81,9 @@ export class World implements Drawable {
      */
     setContext(context: CanvasRenderingContext2D): void {
         this.context = context;
+    }
+
+    getInnerDrawableObjects(): Drawable[] {
+        return [];
     }
 }
