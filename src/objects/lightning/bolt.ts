@@ -8,12 +8,15 @@ import {random} from "../../helpers/utils";
 export class BoltObject extends AbstractObject {
     protected lightning: LightningObject;
 
-    protected strength: number = 100;
+    protected strength: number = 0;
 
     protected segments: BoltSegment[] = [];
 
-    protected topPosition: Vector2;
-    protected bottomPosition: Vector2;
+    protected initialPosition: Vector2;
+
+    protected reactivePosition: Vector2;
+
+    protected velocity: Vector2;
 
     constructor (lightning: LightningObject, strength: number) {
         super();
@@ -22,19 +25,34 @@ export class BoltObject extends AbstractObject {
 
         this.strength = strength;
 
-        this.topPosition = lightning.getPosition();
-        this.bottomPosition = new Vector2(random(this.topPosition.x - 20, this.topPosition.x + 20), 300)
+        this.initialPosition = lightning.getPosition().clone();
+
+        this.reactivePosition = this.initialPosition.clone();
+
+        this.velocity = (new Vector2(0, 0))
+            .setLength(6)
+            .setAngle(random(Math.PI * 0.2, Math.PI * 0.8))
     }
 
     draw (context: CanvasRenderingContext2D) {
-        context.strokeStyle = '#F6F7EB';
-        context.moveTo(this.topPosition.x, this.topPosition.y);
-        context.lineTo(this.bottomPosition.x, this.bottomPosition.y);
+        context.beginPath();
+        context.lineWidth = 3;
+        context.moveTo(this.initialPosition.x, this.initialPosition.y);
+        context.lineTo(this.reactivePosition.x, this.reactivePosition.y);
+
+        context.strokeStyle = '#FFEBDE';
         context.stroke();
+
+        // Draw small circle in the end
+        context.beginPath();
+        context.fillStyle = '#ff3125';
+        context.arc(this.reactivePosition.x, this.reactivePosition.y, 3, 0, Math.PI * 2);
+        context.fill();
     }
 
+
     update () {
-        this.strength -= 0.2;
+        this.reactivePosition.add(this.velocity);
     }
 
     getInnerDrawableObjects () : Drawable[] {
