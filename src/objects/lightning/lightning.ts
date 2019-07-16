@@ -25,7 +25,7 @@ export class LightningObject extends AbstractObject {
 
         this.position = new Vector2(x, y);
 
-        this.bolts.push(new BoltObject(this, this.strength));
+        this.bolts.push(new BoltObject(this));
     }
 
     /**
