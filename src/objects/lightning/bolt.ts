@@ -76,12 +76,6 @@ export class BoltObject extends AbstractObject {
 
     draw (context: CanvasRenderingContext2D) {
         this.drawSegments(context);
-
-        // Draw small circle in the end
-        context.beginPath();
-        context.fillStyle = '#ff3125';
-        context.arc(this.reactivePosition.x, this.reactivePosition.y, 3, 0, Math.PI * 2);
-        context.fill();
     }
 
     update () {
@@ -128,6 +122,8 @@ export class BoltObject extends AbstractObject {
     protected drawSegments (context: CanvasRenderingContext2D) : void {
         context.lineWidth = 3;
         context.lineJoin = 'round';
+        context.shadowColor = '#888888';
+        context.shadowBlur = 6;
 
         context.beginPath();
 
