@@ -7,7 +7,7 @@ export class Vector2 {
         this.y = y;
     }
 
-    add (vector: Vector2) {
+    public add (vector: Vector2) {
         this.x += vector.x;
         this.y += vector.y;
     }
@@ -15,18 +15,18 @@ export class Vector2 {
     /**
      * Get length of vector
      */
-    getLength () : number {
+    public getLength () : number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
     /**
      * Get length of a vector
      */
-    getAngle () : number {
+    public getAngle () : number {
         return Math.atan2(this.y, this.x)
     }
 
-    setLength (length: number) : Vector2 {
+    public setLength (length: number) : Vector2 {
         const angle: number = this.getAngle();
 
         this.x = Math.cos(angle) * length;
@@ -35,7 +35,7 @@ export class Vector2 {
         return this;
     }
 
-    setAngle (angle: number) : Vector2 {
+    public setAngle (angle: number) : Vector2 {
         const length: number = this.getLength();
 
         this.x = Math.cos(angle) * length;
@@ -44,7 +44,7 @@ export class Vector2 {
         return this;
     }
 
-    clone () : Vector2 {
+    public clone () : Vector2 {
         return new Vector2(this.x, this.y)
     }
 }
