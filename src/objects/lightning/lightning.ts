@@ -25,7 +25,7 @@ export class LightningObject extends AbstractObject {
 
         this.position = new Vector2(x, y);
 
-        this.bolts.push(new BoltObject(this));
+        this.createBolt(this.position.clone());
     }
 
     /**
@@ -45,5 +45,13 @@ export class LightningObject extends AbstractObject {
 
     getPosition () : Vector2 {
         return this.position;
+    }
+
+    /**
+     * Create new bolt at certain position
+     * @param position
+     */
+    public createBolt (position: Vector2) : void {
+        this.bolts.push(new BoltObject(this, position));
     }
 }

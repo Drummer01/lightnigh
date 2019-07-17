@@ -18,6 +18,7 @@ const loop = () => {
   world.draw(context);
 
   window.requestAnimationFrame(loop)
+  // window.setTimeout(loop, 500)
 };
 
 

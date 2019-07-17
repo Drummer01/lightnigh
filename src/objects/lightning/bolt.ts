@@ -47,18 +47,35 @@ export class BoltObject extends AbstractObject {
     protected maxSegmentsCount: number = 10;
 
     /**
+     * The probability of bolt expansion
+     * from 0 to 100
+     */
+    protected boltExpandProbability: number = 10;
+
+    /**
+     * Maximum number of bolt expansions
+     */
+    protected maxExpansions: number = 2;
+
+    /**
+     * Current expansion count
+     */
+    protected expansionsCount: number = 0;
+
+    /**
      * Constructor
      *
      * @param lightning
+     * @param initialPosition
      */
-    constructor (lightning: LightningObject) {
+    constructor (lightning: LightningObject, initialPosition: Vector2) {
         super();
 
         this.lightning = lightning;
 
-        this.initialPosition = lightning.getPosition().clone();
+        this.initialPosition = initialPosition;
 
-        this.reactivePosition = this.initialPosition.clone();
+        this.reactivePosition = initialPosition.clone();
 
         this.segments.push(this.initialPosition);
 
@@ -91,6 +108,11 @@ export class BoltObject extends AbstractObject {
             this.velocity.setAngle(random(Math.PI * 0.2, Math.PI * 0.8));
 
             this.maxSegmentLength = random(30, 70);
+        }
+
+        if (random(0, 100) <= this.boltExpandProbability && this.expansionsCount <= this.maxExpansions) {
+            this.expansionsCount++;
+            this.lightning.createBolt(this.reactivePosition.clone())
         }
     }
 
