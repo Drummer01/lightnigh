@@ -50,12 +50,12 @@ export class BoltObject extends AbstractObject {
      * The probability of bolt expansion
      * from 0 to 100
      */
-    protected boltExpandProbability: number = 10;
+    protected boltExpandProbability: number = 25;
 
     /**
      * Maximum number of bolt expansions
      */
-    protected maxExpansions: number = 2;
+    protected maxExpansions: number = 1;
 
     /**
      * Current expansion count
@@ -63,12 +63,24 @@ export class BoltObject extends AbstractObject {
     protected expansionsCount: number = 0;
 
     /**
+     * The bolt generation
+     */
+    protected generation: number;
+
+    /**
+     * The index of generation
+     * when expanding is not possible
+     */
+    protected generationThreshold: number = 1;
+
+    /**
      * Constructor
      *
      * @param lightning
      * @param initialPosition
+     * @param generation
      */
-    constructor (lightning: LightningObject, initialPosition: Vector2) {
+    constructor (lightning: LightningObject, initialPosition: Vector2, generation: number) {
         super();
 
         this.lightning = lightning;
@@ -83,12 +95,14 @@ export class BoltObject extends AbstractObject {
          * Velocity vector of bolt
          */
         this.velocity = new Vector2(0, 0);
-        this.velocity.setLength(20);
+        this.velocity.setLength(40);
         this.velocity.setAngle(random(Math.PI * 0.2, Math.PI * 0.8));
 
         this.maxSegmentLength = random(30, 70);
 
-        this.maxSegmentsCount = random(5, 20);
+        this.maxSegmentsCount = random(5 - generation * 2, 10 - generation * 2);
+
+        this.generation = generation;
     }
 
     draw (context: CanvasRenderingContext2D) {
@@ -110,9 +124,13 @@ export class BoltObject extends AbstractObject {
             this.maxSegmentLength = random(30, 70);
         }
 
-        if (random(0, 100) <= this.boltExpandProbability && this.expansionsCount <= this.maxExpansions) {
+        const canExpand = random(0, 100) <= this.boltExpandProbability &&
+            this.expansionsCount <= this.maxExpansions &&
+            this.generation <= this.generationThreshold;
+
+        if (canExpand) {
             this.expansionsCount++;
-            this.lightning.createBolt(this.reactivePosition.clone())
+            this.lightning.createBolt(this.reactivePosition.clone(), this.generation++);
         }
     }
 
