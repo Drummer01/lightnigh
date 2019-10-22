@@ -52,8 +52,9 @@ export class LightningObject extends AbstractObject {
      *
      * @param position
      * @param generation
+     * @param angleOffset
      */
-    public createBolt (position: Vector2, generation: number = 0) : void {
-        this.bolts.push(new BoltObject(this, position, generation));
+    public createBolt (position: Vector2, generation: number = 0, angleOffset: number = 0) : void {
+        this.bolts.push(new BoltObject(this, position, generation, angleOffset));
     }
 }

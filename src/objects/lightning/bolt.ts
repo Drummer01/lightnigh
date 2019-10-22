@@ -79,8 +79,9 @@ export class BoltObject extends AbstractObject {
      * @param lightning
      * @param initialPosition
      * @param generation
+     * @param velocityAngleOffset
      */
-    constructor (lightning: LightningObject, initialPosition: Vector2, generation: number) {
+    constructor (lightning: LightningObject, initialPosition: Vector2, generation: number, velocityAngleOffset: number = 0) {
         super();
 
         this.lightning = lightning;
@@ -96,7 +97,7 @@ export class BoltObject extends AbstractObject {
          */
         this.velocity = new Vector2(0, 0);
         this.velocity.setLength(40);
-        this.velocity.setAngle(random(Math.PI * 0.2, Math.PI * 0.8));
+        this.velocity.setAngle(random((Math.PI + velocityAngleOffset) * 0.2, (Math.PI + velocityAngleOffset) * 0.8));
 
         this.maxSegmentLength = random(30, 70);
 
@@ -130,7 +131,7 @@ export class BoltObject extends AbstractObject {
 
         if (canExpand) {
             this.expansionsCount++;
-            this.lightning.createBolt(this.reactivePosition.clone(), this.generation++);
+            this.lightning.createBolt(this.reactivePosition.clone(), this.generation++, this.velocity.getAngle());
         }
     }
 
